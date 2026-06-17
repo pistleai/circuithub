@@ -1,0 +1,378 @@
+"use client";
+
+import React, { useState } from "react";
+import { useCart } from "../context/CartContext";
+import { Search, ShoppingCart, User, Menu, X, Trash2, ChevronDown } from "lucide-react";
+import { B2BGstinModal } from "./B2BGstinModal";
+
+export const Header: React.FC = () => {
+  const { cart, cartCount, cartTotal, removeFromCart, updateQuantity, isCartOpen, setIsCartOpen, animateCartIcon, isGstinModalOpen, setIsGstinModalOpen } = useCart();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [searchCategory, setSearchCategory] = useState("All Categories");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
+
+  const categories = [
+    "All Categories",
+    "Robotics Kits",
+    "Dev Boards",
+    "Sensors",
+    "Motors",
+    "Tools",
+    "STEM Learning"
+  ];
+
+  return (
+    <header className="bg-white border-b border-gray-150 sticky top-0 z-40 shadow-sm">
+      {/* Row 1: Logo, Search, Cart & User */}
+      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+        {/* Logo */}
+        <a href="#" className="flex items-center flex-shrink-0" aria-label="CircuitHub Home">
+          <svg className="h-12 w-auto md:h-14" viewBox="0 0 520 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="25" y="25" width="70" height="70" rx="12" fill="#1e3a8a" />
+            <rect x="37" y="10" width="8" height="15" rx="3" fill="#1e3a8a" />
+            <rect x="56" y="10" width="8" height="15" rx="3" fill="#eab308" />
+            <rect x="75" y="10" width="8" height="15" rx="3" fill="#1e3a8a" />
+            
+            <rect x="37" y="95" width="8" height="15" rx="3" fill="#1e3a8a" />
+            <rect x="56" y="95" width="8" height="15" rx="3" fill="#1e3a8a" />
+            <rect x="75" y="95" width="8" height="15" rx="3" fill="#1e3a8a" />
+            
+            <rect x="10" y="37" width="15" height="8" rx="3" fill="#1e3a8a" />
+            <rect x="10" y="56" width="15" height="8" rx="3" fill="#1e3a8a" />
+            <rect x="10" y="75" width="15" height="8" rx="3" fill="#1e3a8a" />
+            
+            <path d="M45 45 H65 V65" stroke="white" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
+            <circle cx="65" cy="65" r="4.5" fill="white" />
+            
+            <path d="M90 56 L130 56 M130 56 L155 31 M130 56 L155 81" stroke="#1e3a8a" strokeWidth="4" strokeLinecap="round" />
+            <circle cx="130" cy="56" r="8" fill="#eab308" />
+            <circle cx="155" cy="31" r="8" fill="#eab308" />
+            <circle cx="155" cy="81" r="8" fill="#eab308" />
+            
+            <text x="180" y="72" fill="#1e3a8a" fontFamily="'Inter', sans-serif" fontWeight="700" fontSize="52" letterSpacing="-1">Circuit</text>
+            <text x="345" y="72" fill="#eab308" fontFamily="'Inter', sans-serif" fontWeight="700" fontSize="52" letterSpacing="-1">Hub</text>
+            <text x="182" y="96" fill="#4b5563" fontFamily="'Inter', sans-serif" fontWeight="600" fontSize="15" letterSpacing="4.5">ELECTRONICS & ROBOTICS</text>
+          </svg>
+        </a>
+
+        {/* Search Bar - Hidden on mobile, flex on desktop */}
+        <div className="hidden md:flex flex-grow max-w-2xl border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-blue-900 focus-within:border-blue-900 overflow-hidden bg-white">
+          <input
+            type="text"
+            placeholder="Search for products, components, kits..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="flex-grow px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none"
+          />
+
+          {/* Category Dropdown on the right side of the input field */}
+          <div className="relative border-l border-gray-300">
+            <button
+              onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
+              className="bg-gray-50 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100 flex items-center gap-1.5 focus:outline-none whitespace-nowrap h-full animate-none"
+            >
+              {searchCategory}
+              <ChevronDown size={14} className="text-gray-500" />
+            </button>
+            {showCategoryDropdown && (
+              <div className="absolute right-0 mt-1 bg-white border border-gray-200 rounded-md shadow-lg py-1 z-50 min-w-[160px]">
+                {categories.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => {
+                      setSearchCategory(cat);
+                      setShowCategoryDropdown(false);
+                    }}
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors focus:outline-none"
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <button className="bg-yellow-500 hover:bg-yellow-600 transition-colors text-blue-950 font-semibold px-6 py-2.5 flex items-center justify-center border-l border-gray-300">
+            <Search size={18} />
+          </button>
+        </div>
+
+        {/* User Utility Area */}
+        <div className="flex items-center gap-4 flex-shrink-0">
+          <button className="text-gray-700 hover:text-blue-900 transition-colors p-2 rounded-full hover:bg-gray-50 hidden sm:block" aria-label="User account">
+            <User size={20} />
+          </button>
+
+          {/* Cart Workspace Trigger */}
+          <button
+            onClick={() => setIsCartOpen(!isCartOpen)}
+            className={`flex items-center gap-2 bg-gray-50 hover:bg-gray-100 transition-all border border-gray-200 px-3.5 py-2 rounded-md relative ${
+              animateCartIcon ? "scale-105 border-yellow-500 shadow-md ring-2 ring-yellow-500/20" : ""
+            }`}
+            aria-label="Open cart workspace"
+          >
+            <ShoppingCart size={18} className="text-blue-900" />
+            <span className="font-semibold text-sm text-gray-800 hidden md:inline">Cart Workspace</span>
+            <span className={`bg-blue-900 text-white text-xs px-2 py-0.5 rounded-full font-bold transition-all ${
+              animateCartIcon ? "bg-yellow-500 scale-110" : ""
+            }`}>
+              {cartCount}
+            </span>
+          </button>
+
+          {/* Mobile Menu Toggle */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="text-gray-700 hover:text-blue-900 transition-colors p-2 rounded-full hover:bg-gray-50 md:hidden"
+            aria-label="Toggle Navigation Menu"
+          >
+            <Menu size={22} />
+          </button>
+        </div>
+      </div>
+
+      {/* Row 2: Secondary Navigation Bar (Desktop) */}
+      <nav className="hidden md:block border-t border-gray-150 bg-white">
+        <div className="max-w-7xl mx-auto px-4 py-2 flex items-center">
+          <div className="flex items-center gap-8 py-0.5">
+            <a href="#" className="text-yellow-500 hover:text-yellow-600 font-bold text-sm tracking-wide transition-colors relative py-1 border-b-2 border-yellow-500">
+              Home
+            </a>
+            <a href="#categories" className="text-gray-700 hover:text-blue-900 font-semibold text-sm tracking-wide transition-colors relative py-1 border-b-2 border-transparent hover:border-blue-900/40">
+              Categories
+            </a>
+            <a href="#robotics-kits" className="text-gray-700 hover:text-blue-900 font-semibold text-sm tracking-wide transition-colors relative py-1 border-b-2 border-transparent hover:border-blue-900/40">
+              Robotics Kits
+            </a>
+            <a href="#components" className="text-gray-700 hover:text-blue-900 font-semibold text-sm tracking-wide transition-colors relative py-1 border-b-2 border-transparent hover:border-blue-900/40">
+              Components
+            </a>
+            <a href="#sensors" className="text-gray-700 hover:text-blue-900 font-semibold text-sm tracking-wide transition-colors relative py-1 border-b-2 border-transparent hover:border-blue-900/40">
+              Sensors
+            </a>
+            <a href="#deals" className="text-gray-700 hover:text-blue-900 font-semibold text-sm tracking-wide flex items-center gap-1.5 transition-colors relative py-1 border-b-2 border-transparent hover:border-blue-900/40">
+              Deals
+              <span className="bg-red-500 text-[10px] text-white px-1.5 py-0.5 rounded font-bold uppercase animate-pulse leading-none">
+                HOT
+              </span>
+            </a>
+            <a href="#about" className="text-gray-700 hover:text-blue-900 font-semibold text-sm tracking-wide transition-colors relative py-1 border-b-2 border-transparent hover:border-blue-900/40">
+              About
+            </a>
+            <a href="#contact" className="text-gray-700 hover:text-blue-900 font-semibold text-sm tracking-wide transition-colors relative py-1 border-b-2 border-transparent hover:border-blue-900/40">
+              Contact
+            </a>
+          </div>
+        </div>
+      </nav>
+
+      {/* Mobile Drawer Slide-in Menu */}
+      {isMobileMenuOpen && (
+        <div className="fixed inset-0 bg-black/50 z-50 md:hidden flex justify-end transition-opacity animate-fade-in">
+          <div className="bg-white w-[300px] h-full flex flex-col p-6 shadow-2xl relative animate-slide-in">
+            <button
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 focus:outline-none p-1 rounded-full hover:bg-gray-50"
+            >
+              <X size={24} />
+            </button>
+
+            {/* Mobile Logo */}
+            <div className="mb-8 pr-6">
+              <span className="font-bold text-xl text-blue-900 flex items-center gap-2">
+                <span className="bg-blue-900 text-yellow-500 p-1.5 rounded-lg text-xs font-mono">CH</span>
+                CircuitHub
+              </span>
+              <p className="text-[10px] text-gray-500 font-medium tracking-wide mt-1">Electronics & Robotics</p>
+            </div>
+
+            {/* Mobile Search */}
+            <div className="mb-6">
+              <div className="flex border border-gray-300 rounded-md overflow-hidden focus-within:ring-2 focus-within:ring-blue-900">
+                <input
+                  type="text"
+                  placeholder="Search products..."
+                  className="w-full px-3 py-2 text-sm focus:outline-none"
+                />
+                <button className="bg-yellow-500 px-4 flex items-center justify-center text-blue-950 font-semibold">
+                  <Search size={16} />
+                </button>
+              </div>
+            </div>
+
+            {/* Navigation Links */}
+            <div className="flex flex-col gap-4 text-base font-semibold text-gray-800">
+              <a
+                href="#"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-yellow-500 hover:text-yellow-600 transition-colors py-1 border-b border-gray-50"
+              >
+                Home
+              </a>
+              <a
+                href="#categories"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="hover:text-blue-900 transition-colors py-1 border-b border-gray-50"
+              >
+                Categories
+              </a>
+              <a
+                href="#robotics-kits"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="hover:text-blue-900 transition-colors py-1 border-b border-gray-50"
+              >
+                Robotics Kits
+              </a>
+              <a
+                href="#components"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="hover:text-blue-900 transition-colors py-1 border-b border-gray-50"
+              >
+                Components
+              </a>
+              <a
+                href="#sensors"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="hover:text-blue-900 transition-colors py-1 border-b border-gray-50"
+              >
+                Sensors
+              </a>
+              <a
+                href="#deals"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="hover:text-blue-900 transition-colors py-1 border-b border-gray-50 flex items-center gap-2"
+              >
+                Deals
+                <span className="bg-red-500 text-[10px] text-white px-1.5 py-0.5 rounded font-bold uppercase">
+                  HOT
+                </span>
+              </a>
+              <a
+                href="#about"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="hover:text-blue-900 transition-colors py-1 border-b border-gray-50"
+              >
+                About
+              </a>
+              <a
+                href="#contact"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="hover:text-blue-900 transition-colors py-1 border-b border-gray-50"
+              >
+                Contact
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Cart Workspace Side Drawer (Glows/Slides out) */}
+      {isCartOpen && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex justify-end animate-fade-in">
+          <div className="bg-white w-full sm:w-[450px] h-full flex flex-col shadow-2xl relative animate-slide-in">
+            {/* Drawer Header */}
+            <div className="p-5 border-b border-gray-200 flex justify-between items-center bg-blue-950 text-white">
+              <div className="flex items-center gap-2">
+                <ShoppingCart className="text-yellow-500" size={20} />
+                <h2 className="font-bold text-lg">Cart Workspace</h2>
+              </div>
+              <button
+                onClick={() => setIsCartOpen(false)}
+                className="text-gray-300 hover:text-white p-1 rounded-full hover:bg-white/10"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Drawer Items list */}
+            <div className="flex-grow overflow-y-auto p-5 space-y-4">
+              {cart.length === 0 ? (
+                <div className="h-full flex flex-col justify-center items-center text-center py-12">
+                  <ShoppingCart size={48} className="text-gray-300 mb-3" />
+                  <p className="font-semibold text-gray-500">Your Cart is Empty</p>
+                  <p className="text-xs text-gray-400 mt-1 max-w-[200px]">Add high-quality components and kits to get started on your hardware build.</p>
+                </div>
+              ) : (
+                cart.map((item) => (
+                  <div key={item.id} className="flex gap-4 p-3 bg-gray-50 border border-gray-150 rounded-lg hover:shadow-sm transition-shadow">
+                    <div className="w-16 h-16 bg-white border border-gray-200 rounded flex-shrink-0 flex items-center justify-center p-1.5 overflow-hidden">
+                      <img src={item.image} alt={item.title} className="w-full h-full object-contain" />
+                    </div>
+                    <div className="flex-grow min-w-0">
+                      <h3 className="font-semibold text-sm text-gray-900 truncate">{item.title}</h3>
+                      <p className="text-xs font-bold text-blue-900 mt-0.5">${item.price.toFixed(2)}</p>
+                      
+                      {/* Quantity Controls */}
+                      <div className="flex items-center justify-between mt-2">
+                        <div className="flex items-center border border-gray-300 rounded overflow-hidden">
+                          <button
+                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                            className="px-2 py-0.5 bg-white hover:bg-gray-100 text-gray-600 font-bold text-xs"
+                          >
+                            -
+                          </button>
+                          <span className="px-3 text-xs font-mono font-semibold text-gray-700 bg-gray-50">
+                            {item.quantity}
+                          </span>
+                          <button
+                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                            className="px-2 py-0.5 bg-white hover:bg-gray-100 text-gray-600 font-bold text-xs"
+                          >
+                            +
+                          </button>
+                        </div>
+                        <button
+                          onClick={() => removeFromCart(item.id)}
+                          className="text-red-500 hover:text-red-600 transition-colors p-1"
+                          aria-label="Remove item"
+                        >
+                          <Trash2 size={15} />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+
+            {/* Drawer Footer */}
+            {cart.length > 0 && (
+              <div className="p-5 border-t border-gray-200 bg-gray-55/80 space-y-4">
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between text-gray-600">
+                    <span>Subtotal:</span>
+                    <span>${cartTotal.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between text-gray-600">
+                    <span>Shipping:</span>
+                    <span className="text-green-600 font-medium">FREE</span>
+                  </div>
+                  <div className="flex justify-between font-bold text-gray-900 text-base pt-2 border-t border-gray-200">
+                    <span>Total Cost:</span>
+                    <span className="text-blue-900">${cartTotal.toFixed(2)}</span>
+                  </div>
+                </div>
+
+                <div className="pt-2">
+                  <button
+                    onClick={() => {
+                      alert(`Proceeding to checkout with: $${cartTotal.toFixed(2)}`);
+                      setIsCartOpen(false);
+                    }}
+                    className="w-full bg-yellow-500 hover:bg-yellow-600 transition-all text-blue-950 font-bold py-3 rounded-lg text-sm text-center shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:shadow-md"
+                  >
+                    Proceed to B2B Billing
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* GSTIN Verification Modal */}
+      <B2BGstinModal isOpen={isGstinModalOpen} onClose={() => setIsGstinModalOpen(false)} />
+    </header>
+  );
+};
