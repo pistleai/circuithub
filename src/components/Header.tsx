@@ -28,32 +28,7 @@ export const Header: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
         {/* Logo */}
         <a href="#" className="flex items-center flex-shrink-0" aria-label="CircuitHub Home">
-          <svg className="h-12 w-auto md:h-14" viewBox="0 0 520 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="25" y="25" width="70" height="70" rx="12" fill="#1e3a8a" />
-            <rect x="37" y="10" width="8" height="15" rx="3" fill="#1e3a8a" />
-            <rect x="56" y="10" width="8" height="15" rx="3" fill="#eab308" />
-            <rect x="75" y="10" width="8" height="15" rx="3" fill="#1e3a8a" />
-            
-            <rect x="37" y="95" width="8" height="15" rx="3" fill="#1e3a8a" />
-            <rect x="56" y="95" width="8" height="15" rx="3" fill="#1e3a8a" />
-            <rect x="75" y="95" width="8" height="15" rx="3" fill="#1e3a8a" />
-            
-            <rect x="10" y="37" width="15" height="8" rx="3" fill="#1e3a8a" />
-            <rect x="10" y="56" width="15" height="8" rx="3" fill="#1e3a8a" />
-            <rect x="10" y="75" width="15" height="8" rx="3" fill="#1e3a8a" />
-            
-            <path d="M45 45 H65 V65" stroke="white" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
-            <circle cx="65" cy="65" r="4.5" fill="white" />
-            
-            <path d="M90 56 L130 56 M130 56 L155 31 M130 56 L155 81" stroke="#1e3a8a" strokeWidth="4" strokeLinecap="round" />
-            <circle cx="130" cy="56" r="8" fill="#eab308" />
-            <circle cx="155" cy="31" r="8" fill="#eab308" />
-            <circle cx="155" cy="81" r="8" fill="#eab308" />
-            
-            <text x="180" y="72" fill="#1e3a8a" fontFamily="'Inter', sans-serif" fontWeight="700" fontSize="52" letterSpacing="-1">Circuit</text>
-            <text x="345" y="72" fill="#eab308" fontFamily="'Inter', sans-serif" fontWeight="700" fontSize="52" letterSpacing="-1">Hub</text>
-            <text x="182" y="96" fill="#4b5563" fontFamily="'Inter', sans-serif" fontWeight="600" fontSize="15" letterSpacing="4.5">ELECTRONICS & ROBOTICS</text>
-          </svg>
+          <img src="/logo.png" alt="CircuitHub Logo" className="h-11 md:h-13 w-auto object-contain" />
         </a>
 
         {/* Search Bar - Hidden on mobile, flex on desktop */}

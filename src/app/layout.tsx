@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "../context/CartContext";
+import { ConstructionBanner } from "../components/ConstructionBanner";
 import { TopBar } from "../components/TopBar";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
@@ -31,14 +32,12 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased scroll-smooth`}
     >
-      <body className="min-h-full flex flex-col bg-gray-50 text-gray-900 font-sans">
+      <body className="min-h-full flex flex-col bg-slate-950 text-gray-900 font-sans">
         <CartProvider>
-          <TopBar />
-          <Header />
-          <main className="flex-grow">{children}</main>
-          <Footer />
+          <main className="flex-grow flex flex-col">{children}</main>
         </CartProvider>
       </body>
     </html>
   );
 }
+
