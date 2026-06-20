@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Hammer, Mail, ShieldAlert, ArrowRight, Check } from "lucide-react";
+import { Mail, ShieldAlert, ArrowRight, Check } from "lucide-react";
 
 export default function Home() {
   const [email, setEmail] = useState("");
@@ -22,11 +22,15 @@ export default function Home() {
       <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-amber-500/10 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="relative z-10 max-w-2xl mx-auto flex flex-col items-center gap-8">
-        {/* Animated Icon Container */}
+        {/* Animated Logo Container */}
         <div className="relative">
-          <div className="absolute inset-0 bg-amber-500/20 rounded-full blur-xl animate-pulse" />
-          <div className="bg-gradient-to-br from-amber-400 to-amber-600 text-slate-950 p-6 rounded-full shadow-lg relative border-2 border-amber-300 animate-bounce-slow">
-            <Hammer size={48} strokeWidth={2} />
+          <div className="absolute inset-0 bg-blue-500/20 rounded-full blur-2xl animate-pulse" />
+          <div className="bg-white/95 backdrop-blur-md px-8 py-5 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-white/20 relative z-10 flex items-center justify-center transition-all duration-300 hover:scale-105">
+            <img 
+              src="/logo.png" 
+              alt="CircuitHub Logo" 
+              className="h-12 sm:h-16 w-auto object-contain" 
+            />
           </div>
         </div>
 
