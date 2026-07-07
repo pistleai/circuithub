@@ -5,13 +5,16 @@ import { useCart } from "../context/CartContext";
 import { Search, ShoppingCart, User, Menu, X, Trash2, ChevronDown, ChevronRight } from "lucide-react";
 import { B2BGstinModal } from "./B2BGstinModal";
 import { products } from "../data/products";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 
 export const Header: React.FC = () => {
   const { cart, cartCount, cartTotal, removeFromCart, updateQuantity, isCartOpen, setIsCartOpen, animateCartIcon, isGstinModalOpen, setIsGstinModalOpen } = useCart();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchCategory, setSearchCategory] = useState("All Categories");
   const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+  const isProducts = pathname?.startsWith("/products");
   const [searchQuery, setSearchQuery] = useState(() => {
     return searchParams?.get("search") || "";
   });
@@ -95,7 +98,7 @@ export const Header: React.FC = () => {
       {/* Row 1: Logo, Search, Cart & User */}
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
         {/* Logo */}
-        <a href="#" className="flex items-center flex-shrink-0" aria-label="CircuitHub Home">
+        <a href="/" className="flex items-center flex-shrink-0" aria-label="CircuitHub Home">
           <img src="/logo.png" alt="CircuitHub Logo" className="h-11 md:h-13 w-auto object-contain" />
         </a>
 
@@ -181,17 +184,26 @@ export const Header: React.FC = () => {
       <nav className="hidden md:block border-t border-gray-150 bg-white">
         <div className="max-w-7xl mx-auto px-4 py-2 flex items-center">
           <div className="flex items-center gap-8 py-0.5">
-            <a href="#" className="text-yellow-500 hover:text-yellow-600 font-bold text-sm tracking-wide transition-colors relative py-1 border-b-2 border-yellow-500">
+            <a
+              href="/"
+              className={isHome
+                ? "text-yellow-500 hover:text-yellow-600 font-bold text-sm tracking-wide transition-colors relative py-1 border-b-2 border-yellow-500"
+                : "text-gray-700 hover:text-blue-900 font-semibold text-sm tracking-wide transition-colors relative py-1 border-b-2 border-transparent hover:border-blue-900/40"
+              }
+            >
               Home
             </a>
             {/* Interactive Product List Link with Hover Menu */}
             <div className="relative group py-1">
               <a 
                 href="/products" 
-                className="text-gray-700 hover:text-blue-900 font-semibold text-sm tracking-wide transition-colors flex items-center gap-1 py-1 border-b-2 border-transparent hover:border-blue-900/45 cursor-pointer"
+                className={isProducts
+                  ? "text-yellow-500 hover:text-yellow-600 font-bold text-sm tracking-wide transition-colors flex items-center gap-1 py-1 border-b-2 border-yellow-500 cursor-pointer"
+                  : "text-gray-700 hover:text-blue-900 font-semibold text-sm tracking-wide transition-colors flex items-center gap-1 py-1 border-b-2 border-transparent hover:border-blue-900/45 cursor-pointer"
+                }
               >
                 Product List
-                <ChevronDown size={14} className="text-gray-400 group-hover:text-blue-900 transition-colors" />
+                <ChevronDown size={14} className={isProducts ? "text-yellow-500 group-hover:text-yellow-650 transition-colors" : "text-gray-400 group-hover:text-blue-900 transition-colors"} />
               </a>
 
               {/* Mega Dropdown Menu - Cascading 3-Panel Grid */}
@@ -345,16 +357,22 @@ export const Header: React.FC = () => {
             {/* Navigation Links */}
             <div className="flex flex-col gap-4 text-base font-semibold text-gray-800">
               <a
-                href="#"
+                href="/"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="text-yellow-500 hover:text-yellow-600 transition-colors py-1 border-b border-gray-50"
+                className={isHome
+                  ? "text-yellow-500 hover:text-yellow-600 transition-colors py-1 border-b border-yellow-500"
+                  : "hover:text-blue-900 transition-colors py-1 border-b border-gray-50"
+                }
               >
                 Home
               </a>
               <a
                 href="/products"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="hover:text-blue-900 transition-colors py-1 border-b border-gray-50"
+                className={isProducts
+                  ? "text-yellow-500 hover:text-yellow-650 transition-colors py-1 border-b border-yellow-500"
+                  : "hover:text-blue-900 transition-colors py-1 border-b border-gray-50"
+                }
               >
                 Product List
               </a>

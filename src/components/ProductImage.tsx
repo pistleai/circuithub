@@ -201,7 +201,7 @@ const MechanicalSvg = () => (
       <line x1="25" y1="65" x2="39" y2="69" stroke="#475569" strokeWidth="1.75" />
       <line x1="25" y1="73" x2="39" y2="77" stroke="#475569" strokeWidth="1.75" />
       <path d="M14,20 L50,20 L44,35 L20,35 Z" fill="url(#mechMetal)" stroke="#475569" strokeWidth="1.5" />
-      <line x1="32" y1="20" x2="32" y2="35" stroke="#cbd5e1" stroke="transparent" />
+      <line x1="32" y1="20" x2="32" y2="35" stroke="#cbd5e1" />
     </g>
     <g transform="translate(56, 44)">
       <polygon points="20,0 37,10 37,30 20,40 3,30 3,10" fill="url(#mechMetal)" stroke="#475569" strokeWidth="1.5" />
