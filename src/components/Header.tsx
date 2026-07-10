@@ -15,6 +15,9 @@ export const Header: React.FC = () => {
   const pathname = usePathname();
   const isHome = pathname === "/";
   const isProducts = pathname?.startsWith("/products");
+  const isDeals = pathname === "/deals";
+  const isAbout = pathname === "/about";
+  const isContact = pathname === "/contact";
   const [searchQuery, setSearchQuery] = useState(() => {
     return searchParams?.get("search") || "";
   });
@@ -302,16 +305,34 @@ export const Header: React.FC = () => {
 
               </div>
             </div>
-            <a href="#deals" className="text-gray-700 hover:text-blue-900 font-semibold text-sm tracking-wide flex items-center gap-1.5 transition-colors relative py-1 border-b-2 border-transparent hover:border-blue-900/40">
+            <a
+              href="/deals"
+              className={isDeals
+                ? "text-yellow-500 hover:text-yellow-600 font-bold text-sm tracking-wide transition-colors relative py-1 border-b-2 border-yellow-500 flex items-center gap-1.5"
+                : "text-gray-700 hover:text-blue-900 font-semibold text-sm tracking-wide transition-colors relative py-1 border-b-2 border-transparent hover:border-blue-900/40 flex items-center gap-1.5"
+              }
+            >
               Deals
               <span className="bg-red-500 text-[10px] text-white px-1.5 py-0.5 rounded font-bold uppercase animate-pulse leading-none">
                 HOT
               </span>
             </a>
-            <a href="#about" className="text-gray-700 hover:text-blue-900 font-semibold text-sm tracking-wide transition-colors relative py-1 border-b-2 border-transparent hover:border-blue-900/40">
+            <a
+              href="/about"
+              className={isAbout
+                ? "text-yellow-500 hover:text-yellow-600 font-bold text-sm tracking-wide transition-colors relative py-1 border-b-2 border-yellow-500"
+                : "text-gray-700 hover:text-blue-900 font-semibold text-sm tracking-wide transition-colors relative py-1 border-b-2 border-transparent hover:border-blue-900/40"
+              }
+            >
               About
             </a>
-            <a href="#contact" className="text-gray-700 hover:text-blue-900 font-semibold text-sm tracking-wide transition-colors relative py-1 border-b-2 border-transparent hover:border-blue-900/40">
+            <a
+              href="/contact"
+              className={isContact
+                ? "text-yellow-500 hover:text-yellow-600 font-bold text-sm tracking-wide transition-colors relative py-1 border-b-2 border-yellow-500"
+                : "text-gray-700 hover:text-blue-900 font-semibold text-sm tracking-wide transition-colors relative py-1 border-b-2 border-transparent hover:border-blue-900/40"
+              }
+            >
               Contact
             </a>
           </div>
@@ -377,9 +398,12 @@ export const Header: React.FC = () => {
                 Product List
               </a>
               <a
-                href="#deals"
+                href="/deals"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="hover:text-blue-900 transition-colors py-1 border-b border-gray-50 flex items-center gap-2"
+                className={isDeals
+                  ? "text-yellow-500 hover:text-yellow-650 transition-colors py-1 border-b border-yellow-500 flex items-center gap-2"
+                  : "hover:text-blue-900 transition-colors py-1 border-b border-gray-50 flex items-center gap-2"
+                }
               >
                 Deals
                 <span className="bg-red-500 text-[10px] text-white px-1.5 py-0.5 rounded font-bold uppercase">
@@ -387,16 +411,22 @@ export const Header: React.FC = () => {
                 </span>
               </a>
               <a
-                href="#about"
+                href="/about"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="hover:text-blue-900 transition-colors py-1 border-b border-gray-50"
+                className={isAbout
+                  ? "text-yellow-500 hover:text-yellow-650 transition-colors py-1 border-b border-yellow-500"
+                  : "hover:text-blue-900 transition-colors py-1 border-b border-gray-50"
+                }
               >
                 About
               </a>
               <a
-                href="#contact"
+                href="/contact"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="hover:text-blue-900 transition-colors py-1 border-b border-gray-50"
+                className={isContact
+                  ? "text-yellow-500 hover:text-yellow-650 transition-colors py-1 border-b border-yellow-500"
+                  : "hover:text-blue-900 transition-colors py-1 border-b border-gray-50"
+                }
               >
                 Contact
               </a>

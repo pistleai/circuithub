@@ -75,7 +75,7 @@ export const Footer: React.FC = () => {
             <li><a href="#components" className="hover:text-yellow-500 transition-colors">Dev Boards</a></li>
             <li><a href="#sensors" className="hover:text-yellow-500 transition-colors">Sensors &amp; Modules</a></li>
             <li><a href="#components" className="hover:text-yellow-500 transition-colors">Active Components</a></li>
-            <li><a href="#deals" className="hover:text-yellow-500 transition-colors">Maker Deals</a></li>
+            <li><a href="/deals" className="hover:text-yellow-500 transition-colors">Maker Deals</a></li>
           </ul>
         </div>
 

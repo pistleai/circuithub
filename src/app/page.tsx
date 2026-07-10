@@ -9,6 +9,10 @@ import { ValueProps } from "../components/ValueProps";
 import { PromoBanner } from "../components/PromoBanner";
 import { Footer } from "../components/Footer";
 
+import { WhyChoose } from "../components/WhyChoose";
+import { TrustMarquee } from "../components/TrustMarquee";
+import { Testimonials } from "../components/Testimonials";
+
 export default function HomePage() {
   return (
     <div className="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
@@ -29,6 +33,15 @@ export default function HomePage() {
 
         {/* Value Proposition Ribbon */}
         <ValueProps />
+
+        {/* Why Choose Section */}
+        <WhyChoose />
+
+        {/* Trust & Certifications Marquee */}
+        <TrustMarquee />
+
+        {/* Maker Testimonials Section */}
+        <Testimonials />
 
         {/* Promotional Deal Banner */}
         <PromoBanner />
