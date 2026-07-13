@@ -3,6 +3,7 @@
 import React from "react";
 import { useCart } from "../context/CartContext";
 import { Star, ShoppingCart } from "lucide-react";
+import Link from "next/link";
 
 interface Product {
   id: string;
@@ -69,6 +70,16 @@ export const FeaturedProducts: React.FC = () => {
     },
   ];
 
+  const getCatalogLink = (id: string) => {
+    if (id === "prod_uno") return "/products?search=Arduino%20Board&product=prod-105";
+    if (id === "prod_esp") return "/products?search=Espressif&product=prod-117";
+    if (id === "prod_sr04") return "/products?search=Ultrasonic&product=prod-167";
+    if (id === "prod_car") return "/products?search=Robot&product=prod-182";
+    if (id === "prod_bat") return "/products?search=Lithium&product=prod-72";
+    if (id === "prod_iron") return "/products?search=Soldering&product=prod-142";
+    return "/products";
+  };
+
   // Helper to render stars based on numeric rating
   const renderStars = (rating: number) => {
     const stars = [];
@@ -81,7 +92,6 @@ export const FeaturedProducts: React.FC = () => {
           <Star key={i} size={13} fill="#eab308" className="text-yellow-500" />
         );
       } else if (i === fullStars + 1 && hasHalfStar) {
-        // Simple representation of half star using an active star with specific styling
         stars.push(
           <Star key={i} size={13} fill="#eab308" className="text-yellow-500 opacity-70" />
         );
@@ -107,13 +117,13 @@ export const FeaturedProducts: React.FC = () => {
               Top-selling hardware components and kits verified by makers worldwide.
             </p>
           </div>
-          <a
-            href="#all-products"
+          <Link
+            href="/products"
             className="text-xs sm:text-sm font-bold text-blue-900 hover:text-blue-800 transition-colors flex items-center gap-1 group"
           >
             View All Products
             <span className="inline-block transition-transform group-hover:translate-x-1 font-mono">&rarr;</span>
-          </a>
+          </Link>
         </div>
 
         {/* Products Grid */}
@@ -132,20 +142,24 @@ export const FeaturedProducts: React.FC = () => {
                 )}
                 
                 {/* Centered Image */}
-                <div className="w-full h-32 bg-white rounded-lg mb-3 flex items-center justify-center p-2 overflow-hidden group-hover:scale-102 transition-transform">
-                  <img
-                    src={product.image}
-                    alt={product.title}
-                    className="w-full h-full object-contain"
-                  />
-                </div>
+                <Link href={getCatalogLink(product.id)} className="block">
+                  <div className="w-full h-32 bg-white rounded-lg mb-3 flex items-center justify-center p-2 overflow-hidden group-hover:scale-102 transition-transform cursor-pointer">
+                    <img
+                      src={product.image}
+                      alt={product.title}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                </Link>
               </div>
 
               {/* Title & Info */}
               <div className="flex-grow flex flex-col justify-between space-y-2">
-                <h3 className="font-semibold text-xs sm:text-sm text-gray-800 line-clamp-2 leading-tight group-hover:text-blue-900 transition-colors h-8 sm:h-9">
-                  {product.title}
-                </h3>
+                <Link href={getCatalogLink(product.id)} className="block">
+                  <h3 className="font-semibold text-xs sm:text-sm text-gray-800 line-clamp-2 leading-tight group-hover:text-blue-900 transition-colors h-8 sm:h-9 cursor-pointer">
+                    {product.title}
+                  </h3>
+                </Link>
 
                 {/* Rating */}
                 <div className="flex items-center gap-1">
