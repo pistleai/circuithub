@@ -494,7 +494,7 @@ export const Header: React.FC = () => {
                     </div>
                     <div className="flex-grow min-w-0">
                       <h3 className="font-semibold text-sm text-gray-900 truncate">{item.title}</h3>
-                      <p className="text-xs font-bold text-blue-900 mt-0.5">${item.price.toFixed(2)}</p>
+                      <p className="text-xs font-bold text-blue-900 mt-0.5">Quote on Request</p>
                       
                       {/* Quantity Controls */}
                       <div className="flex items-center justify-between mt-2">
@@ -535,7 +535,7 @@ export const Header: React.FC = () => {
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between text-gray-600">
                     <span>Subtotal:</span>
-                    <span>${cartTotal.toFixed(2)}</span>
+                    <span className="font-semibold text-slate-700">Pending Quote</span>
                   </div>
                   <div className="flex justify-between text-gray-600">
                     <span>Shipping:</span>
@@ -543,14 +543,14 @@ export const Header: React.FC = () => {
                   </div>
                   <div className="flex justify-between font-bold text-gray-900 text-base pt-2 border-t border-gray-200">
                     <span>Total Cost:</span>
-                    <span className="text-blue-900">${cartTotal.toFixed(2)}</span>
+                    <span className="text-blue-900">Pending Quote</span>
                   </div>
                 </div>
 
                 <div className="pt-2">
                   <button
                     onClick={() => {
-                      alert(`Proceeding to checkout with: $${cartTotal.toFixed(2)}`);
+                      alert(`Proceeding to checkout with ${cart.length} items for volume B2B quote request.`);
                       setIsCartOpen(false);
                     }}
                     className="w-full bg-yellow-500 hover:bg-yellow-600 transition-all text-blue-950 font-bold py-3 rounded-lg text-sm text-center shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:shadow-md"

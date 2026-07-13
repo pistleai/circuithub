@@ -71,12 +71,12 @@ export const FeaturedProducts: React.FC = () => {
   ];
 
   const getCatalogLink = (id: string) => {
-    if (id === "prod_uno") return "/products?search=Arduino%20Board&product=prod-105";
-    if (id === "prod_esp") return "/products?search=Espressif&product=prod-117";
-    if (id === "prod_sr04") return "/products?search=Ultrasonic&product=prod-167";
-    if (id === "prod_car") return "/products?search=Robot&product=prod-182";
-    if (id === "prod_bat") return "/products?search=Lithium&product=prod-72";
-    if (id === "prod_iron") return "/products?search=Soldering&product=prod-142";
+    if (id === "prod_uno") return "/products/prod-105";
+    if (id === "prod_esp") return "/products/prod-117";
+    if (id === "prod_sr04") return "/products/prod-167";
+    if (id === "prod_car") return "/products/prod-182";
+    if (id === "prod_bat") return "/products/prod-72";
+    if (id === "prod_iron") return "/products/prod-142";
     return "/products";
   };
 
@@ -171,8 +171,8 @@ export const FeaturedProducts: React.FC = () => {
 
                 {/* Price and Cart Button */}
                 <div className="flex justify-between items-center pt-1.5">
-                  <span className="font-extrabold text-sm sm:text-base text-gray-900 font-mono">
-                    ${product.price.toFixed(2)}
+                  <span className="text-[10px] text-blue-900 font-bold uppercase tracking-wider bg-blue-50 px-2 py-0.5 rounded border border-blue-100/50">
+                    Request Quote
                   </span>
                   
                   <button

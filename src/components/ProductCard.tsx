@@ -6,17 +6,26 @@ import { ProductImage } from "./ProductImage";
 
 interface ProductCardProps {
   product: Product;
+  onClick?: () => void;
 }
 
-export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+export const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
   return (
-    <Card className="group overflow-hidden border border-slate-200 hover:border-blue-500 hover:shadow-md transition-all duration-300 flex flex-col justify-between h-full bg-white">
-      {/* Product Image section with zoom transition */}
+    <Card 
+      onClick={onClick}
+      className="group overflow-hidden border border-slate-200 hover:border-blue-500 hover:shadow-md transition-all duration-300 flex flex-col justify-between h-full bg-white cursor-pointer relative"
+    >
+      {/* Product Image section with zoom transition and B2B hover inspection overlay */}
       <div className="w-full overflow-hidden border-b border-slate-100 relative bg-slate-50 group-hover:bg-slate-100/50 transition-colors">
         <ProductImage 
           product={product} 
           className="h-40 w-full transition-transform duration-500 ease-out group-hover:scale-105" 
         />
+        <div className="absolute inset-0 bg-blue-950/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+          <span className="bg-blue-950/90 text-white text-[10px] font-bold tracking-wider uppercase px-3 py-1.5 rounded-md shadow-md backdrop-blur-sm transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+            Inspect Blueprint & CAD
+          </span>
+        </div>
       </div>
 
       <CardHeader className="p-5 pb-3">

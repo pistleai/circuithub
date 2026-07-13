@@ -8,7 +8,9 @@ import { FilterSidebar } from "../../components/FilterSidebar";
 import { ProductCard } from "../../components/ProductCard";
 import { products } from "../../data/products";
 import { Search, SlidersHorizontal, Inbox, X } from "lucide-react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
+import { Product } from "../../types/product";
+import Link from "next/link";
 
 export default function ProductsPage() {
   return (
@@ -27,8 +29,9 @@ function ProductsCatalog() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSubcategories, setSelectedSubcategories] = useState<string[]>([]);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
-  const searchParams = useSearchParams();
 
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
   // 1. Programmatically extract categories and subcategories
   const categoriesMap = useMemo(() => {
@@ -57,7 +60,7 @@ function ProductsCatalog() {
     }
 
     if (subcategory) {
-      setSelectedSubcategories([subcategory]);
+      setSelectedSubcategories(subcategory.split(","));
     } else if (category) {
       const subcats = categoriesMap[category] || [];
       setSelectedSubcategories(subcats);
@@ -96,17 +99,44 @@ function ProductsCatalog() {
     });
   }, [searchQuery, selectedSubcategories]);
 
-  // 4. Filter Handlers
+  // 4. Filter Handlers with URL synchronization
+  const updateSearchQuery = (val: string) => {
+    setSearchQuery(val);
+    const params = new URLSearchParams(window.location.search);
+    if (val) {
+      params.set("search", val);
+    } else {
+      params.delete("search");
+    }
+    router.replace(`/products?${params.toString()}`, { scroll: false });
+  };
+
   const handleToggleSubcategory = (subcategory: string) => {
-    setSelectedSubcategories((prev) =>
-      prev.includes(subcategory)
+    setSelectedSubcategories((prev) => {
+      const next = prev.includes(subcategory)
         ? prev.filter((item) => item !== subcategory)
-        : [...prev, subcategory]
-    );
+        : [...prev, subcategory];
+      
+      const params = new URLSearchParams(window.location.search);
+      params.delete("category"); // clear category since we are selecting specific subcategories
+      if (next.length === 1) {
+        params.set("subcategory", next[0]);
+      } else if (next.length > 1) {
+        params.set("subcategory", next.join(","));
+      } else {
+        params.delete("subcategory");
+      }
+      router.replace(`/products?${params.toString()}`, { scroll: false });
+      return next;
+    });
   };
 
   const handleClearFilters = () => {
     setSelectedSubcategories([]);
+    const params = new URLSearchParams(window.location.search);
+    params.delete("category");
+    params.delete("subcategory");
+    router.replace(`/products?${params.toString()}`, { scroll: false });
   };
 
   return (
@@ -137,12 +167,12 @@ function ProductsCatalog() {
               type="text"
               placeholder="Search components..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => updateSearchQuery(e.target.value)}
               className="w-full pl-9 pr-8 py-2 border border-slate-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-lg text-sm bg-slate-50 focus:bg-white transition-all placeholder-slate-400 focus:outline-none"
             />
             {searchQuery && (
               <button
-                onClick={() => setSearchQuery("")}
+                onClick={() => updateSearchQuery("")}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors p-0.5 rounded-full hover:bg-slate-200"
               >
                 <X size={12} />
@@ -240,10 +270,11 @@ function ProductsCatalog() {
               )}
             </div>
           ) : (
-            /* Grid layout of Cards */
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {filteredProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <Link key={product.id} href={`/products/${product.id}`} className="block">
+                  <ProductCard product={product} />
+                </Link>
               ))}
             </div>
           )}
