@@ -20,6 +20,17 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "CircuitHub - Electronics & Robotics Distribution Platform",
   description: "CircuitHub is a premium distributor of electronic parts, sensor kits, and prototyping tools. Sourcing platform engineered to resolve supply friction in the Indian market.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
+  manifest: "/site.webmanifest",
 };
 
 export default function RootLayout({

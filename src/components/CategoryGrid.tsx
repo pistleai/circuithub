@@ -12,32 +12,32 @@ export const CategoryGrid: React.FC = () => {
     {
       name: "Arduino / Dev Boards",
       image: "/arduino_uno.png",
-      link: "#components"
+      link: "/products?category=Development Boards"
     },
     {
       name: "Sensors",
       image: "/hc_sr04.png",
-      link: "#sensors"
+      link: "/products?category=Sensors"
     },
     {
       name: "Motors",
       image: "/dc_motor.png",
-      link: "#components"
+      link: "/products?subcategory=Motors"
     },
     {
       name: "Robotics Kits",
       image: "/smart_robot_car.png",
-      link: "#robotics-kits"
+      link: "/products?subcategory=Robotics Kits"
     },
     {
       name: "Tools",
       image: "/soldering_iron.png",
-      link: "#tools"
+      link: "/products?category=Mechanical Parts, Measurement & Workbench Tools"
     },
     {
       name: "STEM Learning",
       image: "/stem_kit.png",
-      link: "#stem-learning"
+      link: "/products?category=DIY and Maker Kits"
     }
   ];
 

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { useCart } from "../context/CartContext";
 import { Mail, Phone, MapPin, Send } from "lucide-react";
 
@@ -75,7 +76,7 @@ export const Footer: React.FC = () => {
             <li><a href="#components" className="hover:text-yellow-500 transition-colors">Dev Boards</a></li>
             <li><a href="#sensors" className="hover:text-yellow-500 transition-colors">Sensors &amp; Modules</a></li>
             <li><a href="#components" className="hover:text-yellow-500 transition-colors">Active Components</a></li>
-            <li><a href="/deals" className="hover:text-yellow-500 transition-colors">Maker Deals</a></li>
+            <li><Link href="/deals" className="hover:text-yellow-500 transition-colors">Maker Deals</Link></li>
           </ul>
         </div>
 

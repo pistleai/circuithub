@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useMemo, useEffect } from "react";
+import Link from "next/link";
 import { useCart } from "../context/CartContext";
 import { Search, ShoppingCart, User, Menu, X, Trash2, ChevronDown, ChevronRight } from "lucide-react";
 import { B2BGstinModal } from "./B2BGstinModal";
@@ -11,6 +12,7 @@ export const Header: React.FC = () => {
   const { cart, cartCount, cartTotal, removeFromCart, updateQuantity, isCartOpen, setIsCartOpen, animateCartIcon, isGstinModalOpen, setIsGstinModalOpen } = useCart();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchCategory, setSearchCategory] = useState("All Categories");
+  const [mounted, setMounted] = useState(false);
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const isHome = pathname === "/";
@@ -18,14 +20,37 @@ export const Header: React.FC = () => {
   const isDeals = pathname === "/deals";
   const isAbout = pathname === "/about";
   const isContact = pathname === "/contact";
-  const [searchQuery, setSearchQuery] = useState(() => {
-    return searchParams?.get("search") || "";
-  });
+  const [searchQuery, setSearchQuery] = useState("");
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
 
   useEffect(() => {
-    setSearchQuery(searchParams?.get("search") || "");
-  }, [searchParams]);
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (mounted) {
+      setSearchQuery(searchParams?.get("search") || "");
+      
+      const category = searchParams?.get("category");
+      const subcategory = searchParams?.get("subcategory");
+      
+      if (subcategory === "Robotics Kits") {
+        setSearchCategory("Robotics Kits");
+      } else if (subcategory === "Motors") {
+        setSearchCategory("Motors");
+      } else if (category === "Development Boards") {
+        setSearchCategory("Dev Boards");
+      } else if (category === "Sensors") {
+        setSearchCategory("Sensors");
+      } else if (category === "Mechanical Parts, Measurement & Workbench Tools") {
+        setSearchCategory("Tools");
+      } else if (category === "DIY and Maker Kits") {
+        setSearchCategory("STEM Learning");
+      } else {
+        setSearchCategory("All Categories");
+      }
+    }
+  }, [searchParams, mounted]);
 
   // States for Cascading Mega Menu
   const [hoveredMainCategory, setHoveredMainCategory] = useState<string>("Electronic Components");
@@ -101,9 +126,9 @@ export const Header: React.FC = () => {
       {/* Row 1: Logo, Search, Cart & User */}
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
         {/* Logo */}
-        <a href="/" className="flex items-center flex-shrink-0" aria-label="CircuitHub Home">
+        <Link href="/" className="flex items-center flex-shrink-0" aria-label="CircuitHub Home">
           <img src="/logo.png" alt="CircuitHub Logo" className="h-11 md:h-13 w-auto object-contain" />
-        </a>
+        </Link>
 
         {/* Search Bar - Hidden on mobile, flex on desktop */}
         <form onSubmit={handleSearch} className="hidden md:flex flex-grow max-w-2xl border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-blue-900 focus-within:border-blue-900 overflow-hidden bg-white">
@@ -168,7 +193,7 @@ export const Header: React.FC = () => {
             <span className={`bg-blue-900 text-white text-xs px-2 py-0.5 rounded-full font-bold transition-all ${
               animateCartIcon ? "bg-yellow-500 scale-110" : ""
             }`}>
-              {cartCount}
+              {mounted ? cartCount : 0}
             </span>
           </button>
 
@@ -187,7 +212,7 @@ export const Header: React.FC = () => {
       <nav className="hidden md:block border-t border-gray-150 bg-white">
         <div className="max-w-7xl mx-auto px-4 py-2 flex items-center">
           <div className="flex items-center gap-8 py-0.5">
-            <a
+            <Link
               href="/"
               className={isHome
                 ? "text-yellow-500 hover:text-yellow-600 font-bold text-sm tracking-wide transition-colors relative py-1 border-b-2 border-yellow-500"
@@ -195,10 +220,10 @@ export const Header: React.FC = () => {
               }
             >
               Home
-            </a>
+            </Link>
             {/* Interactive Product List Link with Hover Menu */}
             <div className="relative group py-1">
-              <a 
+              <Link 
                 href="/products" 
                 className={isProducts
                   ? "text-yellow-500 hover:text-yellow-600 font-bold text-sm tracking-wide transition-colors flex items-center gap-1 py-1 border-b-2 border-yellow-500 cursor-pointer"
@@ -207,7 +232,7 @@ export const Header: React.FC = () => {
               >
                 Product List
                 <ChevronDown size={14} className={isProducts ? "text-yellow-500 group-hover:text-yellow-650 transition-colors" : "text-gray-400 group-hover:text-blue-900 transition-colors"} />
-              </a>
+              </Link>
 
               {/* Mega Dropdown Menu - Cascading 3-Panel Grid */}
               <div className="absolute left-0 mt-2 w-[850px] bg-white border border-gray-200 rounded-2xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 transform translate-y-1 group-hover:translate-y-0 grid grid-cols-[260px_260px_1fr] h-[450px] overflow-hidden">
@@ -219,7 +244,7 @@ export const Header: React.FC = () => {
                       Main Categories
                     </span>
                   </div>
-                  <a 
+                  <Link 
                     href="/products" 
                     className="flex items-center justify-between px-4 py-2.5 text-xs font-bold text-slate-800 hover:bg-slate-100 hover:text-blue-900 transition-colors border-l-4 border-transparent"
                   >
@@ -227,7 +252,7 @@ export const Header: React.FC = () => {
                     <span className="bg-blue-100 text-[10px] text-blue-900 px-1.5 py-0.5 rounded-full font-mono font-bold">
                       {products.length}
                     </span>
-                  </a>
+                  </Link>
                   <div className="h-[1px] bg-slate-200/50 my-2" />
                   {Object.keys(menuStructure).map((mainCat) => (
                     <div 
@@ -239,9 +264,9 @@ export const Header: React.FC = () => {
                           : "text-slate-505 hover:text-slate-800 hover:bg-slate-100/55 pl-4 border-l-4 border-transparent"
                       }`}
                     >
-                      <a href={`/products?category=${encodeURIComponent(mainCat)}`} className="flex-grow truncate py-0.5">
+                      <Link href={`/products?category=${encodeURIComponent(mainCat)}`} className="flex-grow truncate py-0.5">
                         {mainCat}
-                      </a>
+                      </Link>
                       <ChevronRight size={12} className={`transition-transform flex-shrink-0 ${hoveredMainCategory === mainCat ? "text-blue-900 translate-x-0.5" : "text-slate-350"}`} />
                     </div>
                   ))}
@@ -265,9 +290,9 @@ export const Header: React.FC = () => {
                             : "text-slate-600 hover:text-slate-900 hover:bg-slate-50/50 pl-4 border-l-4 border-transparent"
                         }`}
                       >
-                        <a href={`/products?subcategory=${encodeURIComponent(subCat)}`} className="flex-grow truncate py-0.5">
+                        <Link href={`/products?subcategory=${encodeURIComponent(subCat)}`} className="flex-grow truncate py-0.5">
                           {subCat}
-                        </a>
+                        </Link>
                         <ChevronRight size={12} className={`transition-transform flex-shrink-0 ${hoveredSubcategory === subCat ? "text-blue-800 translate-x-0.5" : "text-slate-300"}`} />
                       </div>
                     ))
@@ -287,14 +312,14 @@ export const Header: React.FC = () => {
                   </div>
                   {hoveredMainCategory && hoveredSubcategory && menuStructure[hoveredMainCategory]?.[hoveredSubcategory] ? (
                     menuStructure[hoveredMainCategory][hoveredSubcategory].map((prodName) => (
-                      <a
+                      <Link
                         key={prodName}
                         href={`/products?search=${encodeURIComponent(prodName)}`}
                         className="block px-5 py-2 text-xs text-slate-600 hover:text-blue-900 hover:bg-blue-50/50 transition-colors font-medium border-b border-slate-100/30 last:border-0 truncate"
                         title={prodName}
                       >
                         {prodName}
-                      </a>
+                      </Link>
                     ))
                   ) : (
                     <div className="px-5 py-8 text-center text-xs text-slate-400 italic">
@@ -305,7 +330,7 @@ export const Header: React.FC = () => {
 
               </div>
             </div>
-            <a
+            <Link
               href="/deals"
               className={isDeals
                 ? "text-yellow-500 hover:text-yellow-600 font-bold text-sm tracking-wide transition-colors relative py-1 border-b-2 border-yellow-500 flex items-center gap-1.5"
@@ -316,8 +341,8 @@ export const Header: React.FC = () => {
               <span className="bg-red-500 text-[10px] text-white px-1.5 py-0.5 rounded font-bold uppercase animate-pulse leading-none">
                 HOT
               </span>
-            </a>
-            <a
+            </Link>
+            <Link
               href="/about"
               className={isAbout
                 ? "text-yellow-500 hover:text-yellow-600 font-bold text-sm tracking-wide transition-colors relative py-1 border-b-2 border-yellow-500"
@@ -325,8 +350,8 @@ export const Header: React.FC = () => {
               }
             >
               About
-            </a>
-            <a
+            </Link>
+            <Link
               href="/contact"
               className={isContact
                 ? "text-yellow-500 hover:text-yellow-600 font-bold text-sm tracking-wide transition-colors relative py-1 border-b-2 border-yellow-500"
@@ -334,7 +359,7 @@ export const Header: React.FC = () => {
               }
             >
               Contact
-            </a>
+            </Link>
           </div>
         </div>
       </nav>
@@ -377,7 +402,7 @@ export const Header: React.FC = () => {
 
             {/* Navigation Links */}
             <div className="flex flex-col gap-4 text-base font-semibold text-gray-800">
-              <a
+              <Link
                 href="/"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className={isHome
@@ -386,8 +411,8 @@ export const Header: React.FC = () => {
                 }
               >
                 Home
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/products"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className={isProducts
@@ -396,8 +421,8 @@ export const Header: React.FC = () => {
                 }
               >
                 Product List
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/deals"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className={isDeals
@@ -409,8 +434,8 @@ export const Header: React.FC = () => {
                 <span className="bg-red-500 text-[10px] text-white px-1.5 py-0.5 rounded font-bold uppercase">
                   HOT
                 </span>
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/about"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className={isAbout
@@ -419,8 +444,8 @@ export const Header: React.FC = () => {
                 }
               >
                 About
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/contact"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className={isContact
@@ -429,7 +454,7 @@ export const Header: React.FC = () => {
                 }
               >
                 Contact
-              </a>
+              </Link>
             </div>
           </div>
         </div>

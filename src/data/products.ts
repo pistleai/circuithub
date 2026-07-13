@@ -97,6 +97,11 @@ const rawCatalog: [string, string, string][] = [
   ["Electronic Components", "Passives & Hardware Accessories", "Ferrite Beads / Ferrite Cable Cores / Ferrite Toroids Ferrite Rings / Ferrite Cores And Accessories"],
   ["Electronic Components", "Passives & Hardware Accessories", "Filters (Active, Emi Feedthrough, Power Line, Rf, Saw Filters)"],
   ["Electronic Components", "Passives & Hardware Accessories", "Ic Socket"],
+  ["Electronic Components", "Motors", "DC Gear Motor (100 RPM, 300 RPM, 500 RPM, 1000 RPM)"],
+  ["Electronic Components", "Motors", "SG90 Micro Servo Motor 9g"],
+  ["Electronic Components", "Motors", "NEMA 17 Stepper Motor (1.8 Degree, 4.2 kg-cm)"],
+  ["Electronic Components", "Motors", "MG996R Metal Gear High Torque Servo Motor"],
+  ["Electronic Components", "Motors", "28BYJ-48 Stepper Motor with ULN2003 Driver"],
 
   // Development Boards
   ["Development Boards", "Arduino Ecosystem", "Arduino Compatible Boards Accessories"],
@@ -175,11 +180,11 @@ const rawCatalog: [string, string, string][] = [
   ["Sensors", "Brand Specific Modules", "Df Robot Iot Sensors And Modules / Smart Iot Sensors / Smartelex Sensors"],
 
   // DIY and Maker Kits
-  ["DIY and Maker Kits", "Learning Kits & Bundles", "Learning And Robotic Kits / Orange Premium Learning Kits / Electronic Component Kits"],
+  ["DIY and Maker Kits", "Robotics Kits", "Learning And Robotic Kits / Orange Premium Learning Kits / Electronic Component Kits"],
   ["DIY and Maker Kits", "Learning Kits & Bundles", "Arduino Kit / Arduino Kits / Official Arduino Kits / Arduino Compatible Kits"],
   ["DIY and Maker Kits", "Learning Kits & Bundles", "Multi Brand Kits For Arduino / Multi Brand Electronic Components Kits"],
   ["DIY and Maker Kits", "Learning Kits & Bundles", "Smartelex Arduino Compatiable Kits / Smartelex Sensor Kits"],
-  ["DIY and Maker Kits", "Application Specific Kits", "Robot Kits / Robot Kit / Industrial Robotic Arm Kits"],
+  ["DIY and Maker Kits", "Robotics Kits", "Robot Kits / Robot Kit / Industrial Robotic Arm Kits"],
   ["DIY and Maker Kits", "Application Specific Kits", "Raspberry Pi Kit / Raspberry Pi Kits / Multi Brand Raspberry Pi Kits / Pro Range Raspberry Pi Kits"],
   ["DIY and Maker Kits", "Application Specific Kits", "Electronic Projects Kits / Multi Brand Projects Kits / Diy Kits On Sale / Ebike Kits / Drone Kits"],
   ["DIY and Maker Kits", "Third-Party Module Ecosystems", "Sparkfun Modules / Mikroe Modules / Keyestudio Modules / Acebott Modules / Seeed Studio Modules / Elecrow Crowtail Module / Adafruit Module"]
