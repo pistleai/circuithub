@@ -34,8 +34,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     {
       url: `${baseUrl}`,
       lastModified: new Date(),
+      changeFrequency: "weekly" as const,
+      priority: 0.3,
+    },
+    {
+      url: `${baseUrl}/h`,
+      lastModified: new Date(),
       changeFrequency: "daily" as const,
-      priority: 1.0, // Rank home page first in search indexing
+      priority: 1.0, // Rank the active temporary homepage first
     },
     {
       url: `${baseUrl}/products`,

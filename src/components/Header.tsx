@@ -15,7 +15,7 @@ export const Header: React.FC = () => {
   const [mounted, setMounted] = useState(false);
   const searchParams = useSearchParams();
   const pathname = usePathname();
-  const isHome = pathname === "/";
+  const isHome = pathname === "/h" || pathname === "/home";
   const isProducts = pathname?.startsWith("/products");
   const isDeals = pathname === "/deals";
   const isAbout = pathname === "/about";
@@ -167,7 +167,7 @@ export const Header: React.FC = () => {
       {/* Row 1: Logo, Search, Cart & User */}
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
         {/* Logo */}
-        <Link href="/" className="flex items-center flex-shrink-0" aria-label="CircuitHub Home">
+        <Link href="/h" className="flex items-center flex-shrink-0" aria-label="CircuitHub Home">
           <img src="/logo.png" alt="CircuitHub Logo" className="h-11 md:h-13 w-auto object-contain" />
         </Link>
 
@@ -375,7 +375,7 @@ export const Header: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 py-2 flex items-center">
           <div className="flex items-center gap-8 py-0.5">
             <Link
-              href="/"
+              href="/h"
               className={isHome
                 ? "text-yellow-500 hover:text-yellow-600 font-bold text-sm tracking-wide transition-colors relative py-1 border-b-2 border-yellow-500"
                 : "text-gray-700 hover:text-blue-900 font-semibold text-sm tracking-wide transition-colors relative py-1 border-b-2 border-transparent hover:border-blue-900/40"
@@ -565,7 +565,7 @@ export const Header: React.FC = () => {
             {/* Navigation Links */}
             <div className="flex flex-col gap-4 text-base font-semibold text-gray-800">
               <Link
-                href="/"
+                href="/h"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className={isHome
                   ? "text-yellow-500 hover:text-yellow-600 transition-colors py-1 border-b border-yellow-500"
