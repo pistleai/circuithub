@@ -22,6 +22,47 @@ export const Header: React.FC = () => {
   const isContact = pathname === "/contact";
   const [searchQuery, setSearchQuery] = useState("");
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+
+  const matchingSubcategories = useMemo(() => {
+    if (!searchQuery) return [];
+    const query = searchQuery.toLowerCase();
+    const subsSet = new Set<string>();
+    const matches: Array<{ subcategory: string; category: string }> = [];
+    
+    products.forEach((p) => {
+      if (
+        (p.subcategory.toLowerCase().includes(query) || p.mainCategory.toLowerCase().includes(query)) &&
+        !subsSet.has(p.subcategory)
+      ) {
+        subsSet.add(p.subcategory);
+        matches.push({ subcategory: p.subcategory, category: p.mainCategory });
+      }
+    });
+    return matches.slice(0, 4);
+  }, [searchQuery]);
+
+  const suggestionsGrouped = useMemo(() => {
+    if (!searchQuery) return {};
+    const query = searchQuery.toLowerCase();
+    const matches = products.filter(
+      (p) =>
+        p.name.toLowerCase().includes(query) ||
+        p.cleanName.toLowerCase().includes(query)
+    );
+    
+    const groups: { [category: string]: typeof products } = {};
+    matches.forEach((p) => {
+      if (!groups[p.mainCategory]) {
+        groups[p.mainCategory] = [];
+      }
+      if (groups[p.mainCategory].length < 3) {
+        groups[p.mainCategory].push(p);
+      }
+    });
+    
+    return groups;
+  }, [searchQuery]);
 
   useEffect(() => {
     setMounted(true);
@@ -130,49 +171,170 @@ export const Header: React.FC = () => {
           <img src="/logo.png" alt="CircuitHub Logo" className="h-11 md:h-13 w-auto object-contain" />
         </Link>
 
-        {/* Search Bar - Hidden on mobile, flex on desktop */}
-        <form onSubmit={handleSearch} className="hidden md:flex flex-grow max-w-2xl border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-blue-900 focus-within:border-blue-900 overflow-hidden bg-white">
-          <input
-            type="text"
-            placeholder="Search for products, components, kits..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="flex-grow px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none"
-          />
+        {/* Search Bar Container */}
+        <div className="relative flex-grow max-w-2xl hidden md:block">
+          <form onSubmit={handleSearch} className="flex w-full border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-blue-900 focus-within:border-blue-900 overflow-hidden bg-white">
+            <input
+              type="text"
+              placeholder="Search for products, components, kits..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onFocus={() => setIsSearchFocused(true)}
+              onBlur={() => setTimeout(() => setIsSearchFocused(false), 250)}
+              className="flex-grow px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none"
+            />
 
-          {/* Category Dropdown on the right side of the input field */}
-          <div className="relative border-l border-gray-300">
-            <button
-              type="button"
-              onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
-              className="bg-gray-50 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100 flex items-center gap-1.5 focus:outline-none whitespace-nowrap h-full animate-none"
-            >
-              {searchCategory}
-              <ChevronDown size={14} className="text-gray-500" />
+            {/* Category Dropdown on the right side of the input field */}
+            <div className="relative border-l border-gray-300">
+              <button
+                type="button"
+                onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
+                className="bg-gray-50 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100 flex items-center gap-1.5 focus:outline-none whitespace-nowrap h-full animate-none"
+              >
+                {searchCategory}
+                <ChevronDown size={14} className="text-gray-500" />
+              </button>
+              {showCategoryDropdown && (
+                <div className="absolute right-0 mt-1 bg-white border border-gray-200 rounded-md shadow-lg py-1 z-50 min-w-[160px]">
+                  {categories.map((cat) => (
+                    <button
+                      key={cat}
+                      type="button"
+                      onClick={() => {
+                        setSearchCategory(cat);
+                        setShowCategoryDropdown(false);
+                      }}
+                      className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors focus:outline-none"
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <button type="submit" className="bg-yellow-500 hover:bg-yellow-600 transition-colors text-blue-950 font-semibold px-6 py-2.5 flex items-center justify-center border-l border-gray-300">
+              <Search size={18} />
             </button>
-            {showCategoryDropdown && (
-              <div className="absolute right-0 mt-1 bg-white border border-gray-200 rounded-md shadow-lg py-1 z-50 min-w-[160px]">
-                {categories.map((cat) => (
-                  <button
-                    key={cat}
-                    type="button"
-                    onClick={() => {
-                      setSearchCategory(cat);
-                      setShowCategoryDropdown(false);
-                    }}
-                    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors focus:outline-none"
-                  >
-                    {cat}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
+          </form>
 
-          <button type="submit" className="bg-yellow-500 hover:bg-yellow-600 transition-colors text-blue-950 font-semibold px-6 py-2.5 flex items-center justify-center border-l border-gray-300">
-            <Search size={18} />
-          </button>
-        </form>
+          {/* Autocomplete / Grouped Suggestions Dropdown */}
+          {isSearchFocused && (
+            <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-2xl z-50 max-h-[380px] overflow-y-auto divide-y divide-gray-100 text-left">
+              {searchQuery.trim() === "" ? (
+                // Grouped category quick links for empty search focus
+                <div className="p-4 space-y-3">
+                  <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest border-b border-gray-150 pb-1.5 mb-2">
+                    Quick B2B Navigation
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <span className="text-[11px] font-bold text-gray-700 block mb-1">Electronic Components</span>
+                      <ul className="space-y-1.5 text-xs text-gray-500">
+                        <li>
+                          <Link 
+                            href="/products?subcategory=Motors" 
+                            className="hover:text-blue-900 flex items-center gap-1 py-0.5 hover:underline"
+                          >
+                            <ChevronRight size={10} /> Motors
+                          </Link>
+                        </li>
+                        <li>
+                          <Link 
+                            href="/products?subcategory=Connectors" 
+                            className="hover:text-blue-900 flex items-center gap-1 py-0.5 hover:underline"
+                          >
+                            <ChevronRight size={10} /> Connectors
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+                    <div>
+                      <span className="text-[11px] font-bold text-gray-700 block mb-1">Development Boards</span>
+                      <ul className="space-y-1.5 text-xs text-gray-500">
+                        <li>
+                          <Link 
+                            href="/products?subcategory=Arduino%20Ecosystem" 
+                            className="hover:text-blue-900 flex items-center gap-1 py-0.5 hover:underline"
+                          >
+                            <ChevronRight size={10} /> Arduino Ecosystem
+                          </Link>
+                        </li>
+                        <li>
+                          <Link 
+                            href="/products?subcategory=ESP32%20%26%20Wireless" 
+                            className="hover:text-blue-900 flex items-center gap-1 py-0.5 hover:underline"
+                          >
+                            <ChevronRight size={10} /> ESP32 & Wireless
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                // Dynamic Search suggestions
+                <>
+                  {/* Category suggestions first */}
+                  {matchingSubcategories.length > 0 && (
+                    <div className="p-3">
+                      <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest pb-1 mb-1 border-b border-gray-50">
+                        Suggested Categories
+                      </div>
+                      <div className="space-y-1 mt-1">
+                        {matchingSubcategories.map((sub, idx) => (
+                          <Link
+                            key={idx}
+                            href={`/products?category=${encodeURIComponent(sub.category)}&subcategory=${encodeURIComponent(sub.subcategory)}`}
+                            className="flex items-center gap-1.5 text-xs text-gray-600 hover:bg-gray-50 p-2 rounded-lg transition-colors hover:text-blue-900"
+                          >
+                            <Search size={12} className="text-gray-450" />
+                            <span>{sub.category}</span>
+                            <span className="text-gray-300">/</span>
+                            <span className="font-bold text-gray-800">{sub.subcategory}</span>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Grouped Products */}
+                  {Object.keys(suggestionsGrouped).length > 0 ? (
+                    Object.keys(suggestionsGrouped).map((catName) => (
+                      <div key={catName} className="p-3">
+                        <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest pb-1 mb-1 border-b border-gray-50">
+                          {catName}
+                        </div>
+                        <div className="space-y-0.5 mt-1">
+                          {suggestionsGrouped[catName].map((prod) => (
+                            <Link
+                              key={prod.id}
+                              href={`/products/${prod.id}`}
+                              className="flex items-center justify-between text-xs text-gray-700 hover:bg-gray-50 p-2 rounded-lg transition-colors group"
+                            >
+                              <span className="font-medium group-hover:text-blue-900 truncate max-w-[70%]">
+                                {prod.name}
+                              </span>
+                              <span className="text-[9px] font-mono text-gray-400 font-bold bg-gray-100 px-1.5 py-0.5 rounded">
+                                {prod.subcategory}
+                              </span>
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    matchingSubcategories.length === 0 && (
+                      <div className="p-4 text-center text-xs text-gray-400">
+                        No matching categories or products found.
+                      </div>
+                    )
+                  )}
+                </>
+              )}
+            </div>
+          )}
+        </div>
 
         {/* User Utility Area */}
         <div className="flex items-center gap-4 flex-shrink-0">

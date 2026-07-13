@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { products } from "../../../data/products";
 import { ProductDetailContainer } from "./ProductDetailContainer";
 
@@ -14,5 +14,9 @@ export default async function ProductDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  return <ProductDetailContainer productId={id} />;
+  return (
+    <Suspense fallback={<div className="bg-slate-50 min-h-screen animate-pulse" />}>
+      <ProductDetailContainer productId={id} />
+    </Suspense>
+  );
 }
