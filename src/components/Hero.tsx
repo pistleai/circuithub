@@ -7,34 +7,64 @@ import Image from 'next/image';
 export const Hero: React.FC = () => {
   const categories = [
     {
-      name: "Arduino / Dev Boards",
-      image: "/arduino_uno.png",
+      name: "Connectors & Plugs",
+      image: "/cat_connectors.png",
+      link: "/products?subcategory=Connectors"
+    },
+    {
+      name: "Switches & Relays",
+      image: "/cat_switches.png",
+      link: "/products?subcategory=Switches & Relays"
+    },
+    {
+      name: "Control Knobs & Caps",
+      image: "/cat_knobs.png",
+      link: "/products?subcategory=Passives & Hardware Accessories"
+    },
+    {
+      name: "USB to RS485 Converters",
+      image: "/cat_rs485.png",
+      link: "/products?search=RS485"
+    },
+    {
+      name: "Embedded & IoT Modules",
+      image: "/cat_embedded.png",
       link: "/products?category=Development Boards"
     },
     {
-      name: "Sensors",
-      image: "/hc_sr04.png",
-      link: "/products?category=Sensors"
+      name: "Precision Resistors",
+      image: "/cat_resistors.png",
+      link: "/products?subcategory=Passives & Discrete Semiconductors"
     },
     {
-      name: "Motors",
-      image: "/dc_motor.png",
-      link: "/products?subcategory=Motors"
+      name: "Passive Components",
+      image: "/cat_passives.png",
+      link: "/products?subcategory=Passives & Discrete Semiconductors"
     },
     {
-      name: "Robotics Kits",
-      image: "/smart_robot_car.png",
-      link: "/products?subcategory=Robotics Kits"
+      name: "Active Components & ICs",
+      image: "/cat_active.png",
+      link: "/products?subcategory=Integrated Circuits (ICs)"
     },
     {
-      name: "Tools",
-      image: "/soldering_iron.png",
-      link: "/products?category=Mechanical Parts, Measurement & Workbench Tools"
+      name: "Regulated Power Supplies",
+      image: "/cat_powersupply.png",
+      link: "/products?subcategory=Power & Magnetic Elements"
     },
     {
-      name: "STEM Learning",
-      image: "/stem_kit.png",
-      link: "/products?category=DIY and Maker Kits"
+      name: "Displays & LED Indicators",
+      image: "/cat_displays.png",
+      link: "/products?subcategory=Optoelectronics"
+    },
+    {
+      name: "Prototyping & Test Equipment",
+      image: "/cat_prototyping.png",
+      link: "/products?subcategory=Measuring Instruments"
+    },
+    {
+      name: "Circuit Protection Devices",
+      image: "/cat_protection.png",
+      link: "/products?subcategory=Circuit Protection"
     }
   ];
 
@@ -123,13 +153,13 @@ export const Hero: React.FC = () => {
             {/* Horizontal Categories Row */}
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 pr-0 xl:pr-4">
               {categories.map((cat, idx) => (
-                <a
+                 <a
                   key={idx}
                   href={cat.link}
-                  className="bg-white border border-gray-150 rounded-xl p-3 flex flex-row items-center gap-3.5 shadow-sm hover:shadow-md hover:border-blue-900/30 transition-all hover:-translate-y-0.5 group"
+                  className="bg-white border border-gray-150 rounded-xl p-3 flex flex-col items-center text-center gap-3 shadow-sm hover:shadow-md hover:border-blue-900/30 transition-all hover:-translate-y-0.5 group"
                 >
-                  {/* Thumbnail Image on the left */}
-                  <div className="w-12 h-12 bg-gray-50 rounded-lg p-1.5 flex-shrink-0 flex items-center justify-center overflow-hidden border border-gray-100 group-hover:scale-105 transition-transform">
+                  {/* Thumbnail Image on top */}
+                  <div className="w-full h-24 bg-gray-50 rounded-lg p-1 flex-shrink-0 flex items-center justify-center overflow-hidden border border-gray-100 group-hover:scale-105 transition-transform">
                     <img
                       src={cat.image}
                       alt={cat.name}
@@ -137,12 +167,12 @@ export const Hero: React.FC = () => {
                     />
                   </div>
 
-                  {/* Title & Explore Link */}
-                  <div className="flex flex-col text-left min-w-0">
-                    <h3 className="font-bold text-xs sm:text-sm text-gray-900 leading-tight group-hover:text-blue-900 transition-colors truncate">
+                  {/* Title & Explore Link below */}
+                  <div className="flex flex-col items-center min-w-0 w-full">
+                    <h3 className="font-bold text-xs sm:text-sm text-gray-900 leading-tight group-hover:text-blue-900 transition-colors line-clamp-2 h-8 flex items-center justify-center">
                       {cat.name}
                     </h3>
-                    <span className="text-[11px] font-semibold text-blue-900 flex items-center gap-0.5 mt-1 group-hover:text-yellow-600 transition-colors">
+                    <span className="text-[11px] font-bold text-blue-900 flex items-center gap-0.5 mt-1.5 group-hover:text-yellow-600 transition-colors">
                       Explore
                       <span className="inline-block transition-transform group-hover:translate-x-1 font-mono">&rarr;</span>
                     </span>
